@@ -6,17 +6,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Row 1 */}
-        <div className="py-8 flex flex-col gap-10">
+        <div className="py-22 flex flex-col gap-10">
           <div className="flex flex-col gap-4 text-left">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <img src="/netguru.svg" className="h-16 w-auto object-contain filter brightness-0 invert" />
-                <p className="text-sm text-[#d4d4d4] mb-0">Our Clients:</p>
-              </div>
+              <img src="/netguru_white.svg" className="w-30 object-contain filter " />
             </div>
+            <p className="text-sm text-[#d4d4d4] mt-15">Our Clients:</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 md:flex md:flex-wrap md:justify-between md:gap-10">
+          <div className="grid grid-cols-2 gap-4 md:flex md:flex-wrap md:justify-between md:gap-10 mt-0">
             {[
               { src: '/olx.svg', label: '21% Higher Conversion for a Top RE Marketplace' },
               { src: '/delivery-hero.svg', label: 'Scaling Core Apps for Delivery Hero, a Q-Commerce Giant' },

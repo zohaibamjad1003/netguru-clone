@@ -63,6 +63,47 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function Stats() {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([])
+
+  useEffect(() => {
+    const update = () => {
+      const container = containerRef.current
+      if (!container) return
+
+      const { bottom } = container.getBoundingClientRect()
+      const vh = window.innerHeight
+      const navHeight = 90
+      const progress = Math.max(0, Math.min(1, (bottom - navHeight) / (vh - navHeight)))
+      const spreadDistance = 90
+
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return
+        const offsetY = index * spreadDistance * progress
+        card.style.transform = `translate3d(0, ${offsetY}px, 0)`
+      })
+    }
+
+    let ticking = false
+    const handler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          update()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    update()
+    window.addEventListener('scroll', handler, { passive: true })
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('scroll', handler)
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
+
   return (
     <section className="py-24 bg-black text-white">
       {/* Dark background section */}
@@ -84,18 +125,16 @@ export default function Stats() {
 
         {/* 4 stats in a row using flexbox */}
         <div
+          ref={containerRef}
           className="flex flex-wrap mt-[70px] md:mt-[100px] gap-6 md:gap-10 items-start md:justify-between lg:flex-nowrap"
           style={{ '--desktop-card-min-width': `${desktopCardMinWidth}px` } as any}
         >
           {stats.map((stat, index) => (
             <div
+              ref={(el) => { cardRefs.current[index] = el }}
               key={stat.label}
-              className={`bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[260px] md:min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] max-w-full md:max-w-[calc(50%-1.25rem)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)] w-full md:w-auto h-auto ${
-                index === 1 ? 'md:mt-[50px]' :
-                index === 2 ? 'md:mt-[100px]' :
-                index === 3 ? 'md:mt-[150px]' :
-                ''
-              }`}
+              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[260px] md:min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] max-w-full md:max-w-[calc(50%-1.25rem)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)] w-full md:w-auto h-auto"
+              style={{ transform: 'translate3d(0,0,0)', willChange: 'transform' }}
             >
               {/* Big number */}
               <p className="text-[61px] font-[400] text-white">

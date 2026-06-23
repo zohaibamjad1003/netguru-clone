@@ -1,3 +1,7 @@
+"use client"
+
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
+
 const services = [
   {
     title: 'Strategy & transformation',
@@ -22,8 +26,61 @@ const services = [
 ]
 
 export default function Services() {
+  // refs for each service block
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([])
+  const minOpacity = 0.45
+  // compute offscreen once
+  const offscreenRef = useRef<{ x: number; y: number } | null>(null)
+  useLayoutEffect(() => {
+    offscreenRef.current = { x: window.innerWidth * 0.15, y: window.innerHeight * 0.15 }
+  }, [])
+
+  useEffect(() => {
+    const vh = () => window.innerHeight
+    const offX = () => (offscreenRef.current ? offscreenRef.current.x : window.innerWidth)
+    const offY = () => (offscreenRef.current ? offscreenRef.current.y : window.innerHeight * 0.15)
+
+    const update = () => {
+      const H = vh()
+      itemRefs.current.forEach((el, idx) => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const top = rect.top
+        const itemOffset = idx * 100
+        const start = H + 120 + itemOffset
+        const end = H * 0.3 + itemOffset
+        const progress = Math.max(0, Math.min(1, (start - top) / (start - end)))
+        const x = offX() * (1 - progress)
+        const y = offY() * (1 - progress)
+        const opacity = minOpacity + (1 - minOpacity) * progress
+        el.style.transform = `translate3d(${x}px, ${y}px, 0)`
+        el.style.opacity = String(opacity)
+      })
+    }
+
+    let ticking = false
+    const handler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          update()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    // initial
+    update()
+    window.addEventListener('scroll', handler, { passive: true })
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('scroll', handler)
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
+
   return (
-    <section className=" py-20 text-white">
+    <section className="overflow-hidden py-20 text-white">
       <div className="max-w-7xl mx-auto px-6">
 
         <h2 className="text-[30px] font-400 text-white mb-16">
@@ -32,10 +89,12 @@ export default function Services() {
         </h2>
 
         <div className="space-y-1">
-          {services.map((service) => (
+          {services.map((service, idx) => (
             <div
+              ref={(el) => { itemRefs.current[idx] = el }}
               key={service.title}
-              className="border-b border-white/20 py-[40px]"
+              className="border-b border-white/20 py-[35px]"
+              style={{ transform: 'translate3d(0,0,0)', opacity: 1, willChange: 'transform, opacity' }}
             >
               <div className="flex flex-col md:flex-row justify-between gap-5 items-start">
                 <h3 className="text-[24px] font-bold text-white md:w-[41%]">

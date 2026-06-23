@@ -29,9 +29,9 @@ export default function WhyNetguru() {
             <div>
               {/* Background image placeholder */}
               <img 
-                src="/netguru (1).svg" 
+                src="/netguru_white.svg" 
                 alt="Netguru"
-                className="w-[100px] h-[21px] mb-8 invert"
+                className="w-[100px] h-[21px] mb-8 "
               />
 
               <h2 className="text-[51px] mb-0 lg:mb-[150px]">
@@ -50,7 +50,7 @@ export default function WhyNetguru() {
           {numbers.map((item) => (
             <div
               key={item.label}
-              className="space-y-4 md:space-y-2"
+              className="space-y-4 md:space-y-2 bg-[radial-gradient(circle_at_top_left,color-mix(in_srgb,#0a1a0f_10%,transparent),color-mix(in_srgb,#0a1a0f_60%,transparent))] p-6 "
             >
               <h3 className={`text-white text-[61px] font-[400] mb-0 ${item.value === '2500+' ? 'md:text-[52px] lg:text-[61px]' : ''}`}>
                 {item.value}

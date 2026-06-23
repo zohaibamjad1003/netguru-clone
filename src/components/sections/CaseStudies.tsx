@@ -101,7 +101,7 @@ export default function CaseStudies() {
           {[caseStudies.slice(0, 2), caseStudies.slice(2, 4), caseStudies.slice(4, 6)].map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className={`flex flex-col md:flex-row items-start gap-8 md:gap-25 ${rowIndex === 1 ? 'md:justify-end' : 'md:justify-start'}`}
+              className={`w-full md:w-[83%] ${rowIndex === 1 ? 'md:ml-auto' : ''} flex flex-col md:flex-row items-start justify-start gap-8 md:gap-25`}
             >
               {row.map((study, studyIndex) => {
                 const caseId = rowIndex * 2 + studyIndex + 1
@@ -111,7 +111,7 @@ export default function CaseStudies() {
                     id={`${caseId}`}
                     href={`/clients/${study.slug}`}
                     // Template literal: /clients/delivery-hero, /clients/vinted-go, etc.
-                    className={`group case-study-${caseId} block rounded-none overflow-visible md:w-[450px] w-full self-start ${[2, 4, 6].includes(caseId) ? 'md:mt-[90px]' : ''}`}
+                    className={`group case-study-${caseId} block rounded-none overflow-visible w-full md:w-1/2 self-start ${[2, 4, 6].includes(caseId) ? 'md:mt-[90px]' : ''}`}
                     // group → lets child elements react to parent hover
                   >
                     <div className="relative h-[320px] sm:h-[360px] md:h-[450px] w-full overflow-visible">

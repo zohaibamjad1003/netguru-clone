@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 const testimonials = [
   
   {
@@ -54,6 +56,39 @@ const testimonials = [
 
 export default function Testimonials() {
   const testimonialTopMargin = 150 // change this value to adjust top margin for testimonials 1, 3, and 5
+  const leftColumnRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const update = () => {
+      const el = leftColumnRef.current
+      if (!el) return
+
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const progress = Math.max(0, Math.min(1, 1 - rect.top / vh))
+      const translateY = -100 * progress
+      el.style.transform = `translate3d(0, ${translateY}px, 0)`
+    }
+
+    let ticking = false
+    const handler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          update()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    update()
+    window.addEventListener('scroll', handler, { passive: true })
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('scroll', handler)
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
 
   return (
     <section className="pt-24 pb-35 bg-[#333333]">
@@ -65,11 +100,11 @@ export default function Testimonials() {
 
         {/* Grid of 6 containers */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          <div className="space-y-8 md:space-y-12 md:mt-[var(--testimonial-top-margin)]" style={{ '--testimonial-top-margin': `${testimonialTopMargin}px` } as React.CSSProperties}>
+          <div ref={leftColumnRef} className="space-y-8 md:space-y-12 md:mt-[var(--testimonial-top-margin)]" style={{ '--testimonial-top-margin': `${testimonialTopMargin}px` } as any}>
             {testimonials.filter((_, index) => index % 2 === 0).map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex flex-col gap-12 md:gap-0 justify-between bg-black p-4 md:p-6 h-auto md:h-[340px]"
+                className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]"
               >
                 {/* Top image */}
                 <div className="w-full overflow-hidden">
@@ -118,7 +153,7 @@ export default function Testimonials() {
             {testimonials.filter((_, index) => index % 2 === 1).map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex flex-col gap-12 md:gap-0 justify-between bg-black p-4 md:p-6 h-auto md:h-[340px]"
+                className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]"
               >
                 {/* Top image */}
                 <div className="w-full overflow-hidden">
