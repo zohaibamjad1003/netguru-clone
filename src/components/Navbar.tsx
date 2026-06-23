@@ -758,7 +758,7 @@ export default function Navbar() {
       <div className="max-w-[1230px] mx-auto flex items-center justify-between h-19 px-4 sm:px-6 lg:px-0">
 
         {/* LEFT SIDE: Logo */}
-        <Link href="/" className="flex items-center h-11 px-3 py-2 sm:px-4 sm:py-2">
+        <Link href="/" className="flex items-center h-7 ">
           <img
             src="/netguru_white.svg"
             alt="Netguru"
