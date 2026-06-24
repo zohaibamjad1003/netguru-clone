@@ -13,7 +13,7 @@ export default function CtaBanner() {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <h2 className="text-[30px] font-normal leading-tight mb-10">
+        <h2 className="text-2xl md:text-2xl lg:text-3xl font-normal leading-tight mb-10">
           Design, build, and{' '}
           <span className="font-semibold">scale digital commerce</span>{' '}
           solutions that drive revenue and operational excellence

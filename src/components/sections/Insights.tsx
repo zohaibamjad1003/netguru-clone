@@ -30,6 +30,49 @@ const insights = [
   },
 ]
 
+function InsightCard({ item, index }: { item: typeof insights[0]; index: number }) {
+  return (
+    <Link href={item.href} className="block h-full">
+      <img
+        src={item.image}
+        alt={item.title}
+        className="h-48 w-full object-cover transition duration-300"
+      />
+      <div className="p-6 text-white bg-[#333333]">
+        <span className="text-xs text-white-600 font-semibold uppercase tracking-wider">
+          {item.type}
+        </span>
+        <h3 className="mt-2 text-base font-semibold text-white leading-snug transition-colors">
+          {item.title}
+        </h3>
+        {(item.authorName || index === 1) && (
+          <div className="mt-4 flex items-center justify-between gap-3 text-sm text-white">
+            {item.authorName ? (
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 overflow-hidden bg-white/10">
+                  <img
+                    src={item.authorImage}
+                    alt={item.authorName}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <p className="text-sm text-white font-semibold">
+                  {item.authorName}
+                  <span className="mx-2 text-white/70">/</span>
+                  <span className="text-xs text-white/70">{item.date}</span>
+                </p>
+              </div>
+            ) : (
+              <div />
+            )}
+            <span className="text-white text-xl">{index === 1 ? '↗' : '→'}</span>
+          </div>
+        )}
+      </div>
+    </Link>
+  )
+}
+
 export default function Insights() {
   const sectionRef = useRef<HTMLDivElement | null>(null)
   const cardTwoRef = useRef<HTMLDivElement | null>(null)
@@ -79,7 +122,22 @@ export default function Insights() {
           Explore insights <span className="font-bold">for acceleration</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
+        {/* MOBILE — horizontal snap slider */}
+        <div className="md:hidden overflow-hidden">
+          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4">
+            {insights.map((item, index) => (
+              <div
+                key={item.title}
+                className="snap-start shrink-0 w-[80vw] overflow-hidden"
+              >
+                <InsightCard item={item} index={index} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP — original 3 column grid */}
+        <div className="hidden md:grid grid-cols-3 gap-6 md:gap-12">
           {insights.map((item, index) => (
             <div
               key={item.title}
@@ -90,47 +148,7 @@ export default function Insights() {
               className={`group block overflow-hidden transform transition duration-300 hover:shadow-lg hover:scale-[1.05] ${index === 1 ? 'md:mt-[50px]' : index === 2 ? 'md:mt-[100px]' : ''}`}
               style={{ transform: 'translate3d(0,0,0)' }}
             >
-              <Link href={item.href} className="block h-full">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-48 w-full object-cover transition duration-300"
-                />
-
-                <div className="p-6 text-white bg-[#333333]">
-                <span className="text-xs text-white-600 font-semibold uppercase tracking-wider">
-                  {item.type}
-                </span>
-                <h3 className="mt-2 text-base font-semibold text-white leading-snug transition-colors">
-                  {item.title}
-                </h3>
-
-                {(item.authorName || index === 1) && (
-                  <div className="mt-4 flex items-center justify-between gap-3 text-sm text-white">
-                    {item.authorName ? (
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 overflow-hidden bg-white/10">
-                          <img
-                            src={item.authorImage}
-                            alt={item.authorName}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <p className="text-sm text-white font-semibold">
-                          {item.authorName}
-                          <span className="mx-2 text-white/70">/</span>
-                          <span className="text-xs text-white/70">{item.date}</span>
-                        </p>
-                      </div>
-                    ) : (
-                      <div />
-                    )}
-
-                    <span className="text-white text-xl">{index === 1 ? '↗' : '→'}</span>
-                  </div>
-                )}
-              </div>
-            </Link>
+              <InsightCard item={item} index={index} />
             </div>
           ))}
         </div>

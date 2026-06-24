@@ -1,5 +1,4 @@
 'use client'
-// ↑ needed because we use useEffect and useRef (browser features)
 
 import { useEffect, useRef, useState } from 'react'
 
@@ -10,56 +9,41 @@ const stats = [
   { value: 21, suffix: '%', label: 'higher conversion for a top global marketplace' },
 ]
 
-const desktopCardMinWidth = 220 // change this value to adjust desktop card min-width in px
+const desktopCardMinWidth = 220
 
-// This is a small helper component that counts up a number
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0)
-  // count = the number currently displayed
-  // starts at 0, animates up to target
-
   const ref = useRef<HTMLSpanElement>(null)
-  // useRef lets us watch this element without re-rendering
 
   useEffect(() => {
-    // IntersectionObserver watches when an element enters the screen
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Element is now visible — start counting up
           let start = 0
-          const duration = 500     // 2 seconds total
+          const duration = 500
           const increment = target / (duration / 16)
-          // How much to add each frame (60fps = every 16ms)
 
           const timer = setInterval(() => {
             start += increment
             if (start >= target) {
-              setCount(target)       // snap to exact final number
-              clearInterval(timer)   // stop the interval
+              setCount(target)
+              clearInterval(timer)
             } else {
               setCount(parseFloat(start.toFixed(1)))
-              // toFixed(1) keeps 1 decimal place (for 5.0)
             }
           }, 16)
 
-          observer.disconnect() // stop watching once animation starts
+          observer.disconnect()
         }
       },
       { threshold: 0.5 }
-      // threshold: 0.5 → trigger when 50% of element is visible
     )
 
     if (ref.current) observer.observe(ref.current)
-
-    return () => observer.disconnect() // cleanup when component unmounts
+    return () => observer.disconnect()
   }, [target])
 
-  return (
-    <span ref={ref}>
-      {count}{suffix}
-    </span>
-  )
+  return <span ref={ref}>{count}{suffix}</span>
 }
 
 export default function Stats() {
@@ -106,7 +90,6 @@ export default function Stats() {
 
   return (
     <section className="py-24 bg-black text-white">
-      {/* Dark background section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="tangible-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-[120px] mb-16">
@@ -123,24 +106,41 @@ export default function Stats() {
           </div>
         </div>
 
-        {/* 4 stats in a row using flexbox */}
+        {/* MOBILE — horizontal snap slider */}
+        <div className="md:hidden overflow-hidden mt-[70px]">
+          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-[#333333] p-[25px] text-white snap-start shrink-0 w-[75vw]"
+              >
+                <p className="text-[61px] font-[400] text-white">
+                  <CountUp target={stat.value} suffix={stat.suffix} />
+                </p>
+                <p className="mt-3 pb-6 mb-16 text-[#ebebeb] text-[14px] font-[400] leading-relaxed">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP — original layout */}
         <div
           ref={containerRef}
-          className="flex flex-wrap mt-[70px] md:mt-[100px] gap-6 md:gap-10 items-start md:justify-between lg:flex-nowrap"
+          className="hidden md:flex mt-[100px] gap-10 items-start justify-between lg:flex-nowrap"
           style={{ '--desktop-card-min-width': `${desktopCardMinWidth}px` } as any}
         >
           {stats.map((stat, index) => (
             <div
               ref={(el) => { cardRefs.current[index] = el }}
               key={stat.label}
-              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[260px] md:min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] max-w-full md:max-w-[calc(50%-1.25rem)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)] w-full md:w-auto h-auto"
+              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)]"
               style={{ transform: 'translate3d(0,0,0)', willChange: 'transform' }}
             >
-              {/* Big number */}
               <p className="text-[61px] font-[400] text-white">
                 <CountUp target={stat.value} suffix={stat.suffix} />
               </p>
-              {/* Description */}
               <p className="mt-3 pb-[130px] mb-16 text-[#ebebeb] text-[14px] font-[400] leading-relaxed">
                 {stat.label}
               </p>

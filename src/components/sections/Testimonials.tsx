@@ -57,24 +57,35 @@ const testimonials = [
   },
 ];
 
+// Reusable card component
 function TestimonialCard({
   testimonial,
 }: {
   testimonial: (typeof testimonials)[0];
 }) {
   return (
-    <div className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem] snap-start shrink-0 w-[80vw] sm:w-[70vw] md:w-auto">
+    <div
+      className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]
+      // Mobile slider k liye
+      snap-start shrink-0 w-[70vw] sm:w-[70vw] md:w-auto
+    "
+    >
+      {/* Top image */}
       <div className="w-full overflow-hidden">
         <img
           src={testimonial.topImage}
           className="w-[70px] h-auto md:w-[80px] object-contain filter brightness-0 invert"
         />
       </div>
+
+      {/* Quote */}
       <div className="py-3 md:py-4">
         <p className="text-[16px] md:text-[18px] font-[400] text-[#ebebeb] leading-relaxed">
           {testimonial.quote}
         </p>
       </div>
+
+      {/* Bottom */}
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-200 flex items-center justify-center overflow-hidden">
           <img
@@ -111,9 +122,7 @@ function TestimonialCard({
 export default function Testimonials() {
   const testimonialTopMargin = 150;
   const leftColumnRef = useRef<HTMLDivElement | null>(null);
-  const sliderRef = useRef<HTMLDivElement | null>(null);
 
-  // Desktop left column parallax
   useEffect(() => {
     const update = () => {
       const el = leftColumnRef.current;
@@ -121,38 +130,8 @@ export default function Testimonials() {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const progress = Math.max(0, Math.min(1, 1 - rect.top / vh));
-      el.style.transform = `translate3d(0, ${-100 * progress}px, 0)`;
-    };
-
-    let ticking = false;
-    const handler = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          update();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", handler, { passive: true });
-    window.addEventListener("resize", handler);
-    return () => {
-      window.removeEventListener("scroll", handler);
-      window.removeEventListener("resize", handler);
-    };
-  }, []);
-
-  // Mobile slider parallax
-  useEffect(() => {
-    const update = () => {
-      const el = sliderRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const progress = Math.max(0, Math.min(1, 1 - rect.top / vh));
-      el.style.transform = `translate3d(${-150 * progress}px, 0, 0)`;
+      const translateY = -100 * progress;
+      el.style.transform = `translate3d(0, ${translateY}px, 0)`;
     };
 
     let ticking = false;
@@ -182,21 +161,14 @@ export default function Testimonials() {
           Check our <span className="font-bold">clients&apos; words</span>
         </h2>
 
-        {/* MOBILE — horizontal slider with parallax */}
-        {/* MOBILE — wrapper pe overflow-hidden */}
-        <div className="md:hidden overflow-hidden">
-          <div
-            ref={sliderRef}
-            className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4"
-            style={{ willChange: "transform" }}
-          >
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-            ))}
-          </div>
+        {/* MOBILE — horizontal slider */}
+        <div className="flex md:hidden overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4">
+          {testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          ))}
         </div>
 
-        {/* DESKTOP — 2 column grid */}
+        {/* DESKTOP — original 2 column grid */}
         <div className="hidden md:grid grid-cols-2 gap-8 md:gap-12">
           <div
             ref={leftColumnRef}
