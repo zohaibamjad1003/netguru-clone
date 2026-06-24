@@ -18,7 +18,7 @@ export default function CommerceFootprint() {
   return (
     // Dark background section, same color family as your other dark sections
     <section className="py-24 text-white" style={{ backgroundColor: '#333333' }}>
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto ">
 
         {/* LOGO GRID */}
         {/* Row 1: Text (2 columns) */}

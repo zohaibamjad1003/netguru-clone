@@ -107,7 +107,7 @@ export default function Stats() {
   return (
     <section className="py-24 bg-black text-white">
       {/* Dark background section */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-6">
+      <div className="max-w-7xl mx-auto">
 
         <div className="tangible-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-[120px] mb-16">
           <div className="w-full md:w-[40%]">

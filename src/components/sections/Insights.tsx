@@ -73,7 +73,7 @@ export default function Insights() {
 
   return (
     <section ref={sectionRef} className="py-24 bg-[#161616]">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto ">
 
         <h2 className="text-[30px] font-[400] text-white mb-15 md:mb-30">
           Explore insights <span className="font-bold">for acceleration</span>
