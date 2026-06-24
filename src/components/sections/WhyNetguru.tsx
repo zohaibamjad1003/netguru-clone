@@ -19,7 +19,7 @@ export default function WhyNetguru() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto  relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         {/* Two column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-stretch">
           {/* LEFT COLUMN - Image, Logo, Heading, Text */}

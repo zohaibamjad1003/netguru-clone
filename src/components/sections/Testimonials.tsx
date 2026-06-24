@@ -95,7 +95,7 @@ export default function Testimonials() {
 
   return (
     <section className="pt-24 pb-35 bg-[#333333]">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-[30px] font-[400] text-white mb-20">
           Check our <span className="font-bold">clients&apos; words</span>
         </h2>

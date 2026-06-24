@@ -14,7 +14,7 @@ export default function Hero() {
       </video>
 
       {/* CONTENT */}
-      <div className="relative max-w-7xl mx-auto z-10 text-left text-white">
+      <div className="relative max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto z-10 text-left text-white">
         <div className="flex flex-col md:flex-row gap-10">
           <div className="md:w-[60%] lg:w-[45%]">
             <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[91px] font-400 tracking-[0px] leading-[50px] sm:leading-[58px] md:leading-[72px] lg:leading-[80px] mt-85 mb-10">

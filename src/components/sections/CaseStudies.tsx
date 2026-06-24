@@ -87,7 +87,7 @@ export default function CaseStudies() {
 
   return (
     <section className="py-25 bg-black">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-0"> 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> 
 
         {/* Section heading */}
         <h2 className="text-[24px] sm:text-[28px] md:text-[30px] font-semi-bold text-white mb-16">

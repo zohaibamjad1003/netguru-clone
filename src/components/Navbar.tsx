@@ -755,7 +755,7 @@ export default function Navbar() {
     >
 
       {/* This div centers the content and limits max width */}
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-19 px-4 sm:px-6 lg:px-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-19">
 
         {/* LEFT SIDE: Logo */}
         <Link href="/" className="flex items-center h-7 ">

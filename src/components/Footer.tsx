@@ -3,7 +3,7 @@
 export default function Footer() {
   return (
     <footer className="border-t border-[#505050] bg-gray-950 text-gray-400">
-      <div className="max-w-7xl mx-auto ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Row 1 */}
         <div className="py-22 flex flex-col gap-10">
           <div className="flex flex-col gap-4 text-left">

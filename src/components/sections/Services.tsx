@@ -89,7 +89,7 @@ export default function Services() {
 
   return (
     <section className="overflow-hidden py-20 text-white">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-[30px] font-400 text-white mb-16">
           Leverage full digital{" "}
           <span className="font-bold">commerce expertise</span>

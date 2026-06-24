@@ -4,14 +4,14 @@ export default function CtaBanner() {
   return (
     // Dark section with a centered call to action
     <section
-      className="pt-24 pb-24 md:pt-32 md:pb-32 lg:pt-55 lg:pb-55 bg-gray-950 text-white text-center px-6"
+      className="pt-24 pb-24 md:pt-32 md:pb-32 lg:pt-55 lg:pb-55 bg-gray-950 text-white text-center "
       style={{
         backgroundImage: "url('/upDown.webp')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <h2 className="text-[30px] font-normal leading-tight mb-10">
           Design, build, and{' '}
