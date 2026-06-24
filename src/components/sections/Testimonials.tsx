@@ -32,7 +32,7 @@ const testimonials = [
     id: 4,
     topImage: "/sportano.svg",
     quote:
-      "Netguru’s mobile experience produced a robust solution that fully meets our objectives.",
+      "Netguru's mobile experience produced a robust solution that fully meets our objectives.",
     name: "Grzegorz Kupidura",
     role: "Chief Technology Officer",
     bottomImage: "/kupidura.jpeg",
@@ -41,7 +41,7 @@ const testimonials = [
     id: 5,
     topImage: "/volkswagen.svg",
     quote:
-      "Let me put it this way: we have built a grand and impressive building. But without Netguru’s insights, we would be stuck on the ground-floor forever.",
+      "Let me put it this way: we have built a grand and impressive building. But without Netguru's insights, we would be stuck on the ground-floor forever.",
     name: "Artur Kryzan",
     role: "Team Leader and CX Manager",
     bottomImage: "/Artur_Kryzan.jpg",
@@ -50,27 +50,109 @@ const testimonials = [
     id: 6,
     topImage: "/artemest.svg",
     quote:
-      "With Netguru, we’re now releasing many more features than we used to.",
+      "With Netguru, we're now releasing many more features than we used to.",
     name: "Marco Deseri",
     role: "Chief Digital Officer",
     bottomImage: "/Marco_Deseri.jpg",
   },
 ];
 
-export default function Testimonials() {
-  const testimonialTopMargin = 150; // change this value to adjust top margin for testimonials 1, 3, and 5
-  const leftColumnRef = useRef<HTMLDivElement | null>(null);
+function TestimonialCard({
+  testimonial,
+}: {
+  testimonial: (typeof testimonials)[0];
+}) {
+  return (
+    <div className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem] snap-start shrink-0 w-[80vw] sm:w-[70vw] md:w-auto">
+      <div className="w-full overflow-hidden">
+        <img
+          src={testimonial.topImage}
+          className="w-[70px] h-auto md:w-[80px] object-contain filter brightness-0 invert"
+        />
+      </div>
+      <div className="py-3 md:py-4">
+        <p className="text-[16px] md:text-[18px] font-[400] text-[#ebebeb] leading-relaxed">
+          {testimonial.quote}
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-200 flex items-center justify-center overflow-hidden">
+          <img
+            src={testimonial.bottomImage}
+            alt={testimonial.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          {testimonial.id !== 3 ? (
+            <p>
+              <span className="text-white font-[700] text-[14px]">
+                {testimonial.name}
+              </span>
+              <span className="mx-2 text-xs text-white/70">/</span>
+              <span className="text-[#ebebeb] font-[400] text-[14px]">
+                {testimonial.role}
+              </span>
+            </p>
+          ) : (
+            <>
+              <p className="font-semibold text-sm text-white">
+                {testimonial.name}
+              </p>
+              <p className="text-xs text-white">{testimonial.role}</p>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
+export default function Testimonials() {
+  const testimonialTopMargin = 150;
+  const leftColumnRef = useRef<HTMLDivElement | null>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  // Desktop left column parallax
   useEffect(() => {
     const update = () => {
       const el = leftColumnRef.current;
       if (!el) return;
-
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const progress = Math.max(0, Math.min(1, 1 - rect.top / vh));
-      const translateY = -100 * progress;
-      el.style.transform = `translate3d(0, ${translateY}px, 0)`;
+      el.style.transform = `translate3d(0, ${-100 * progress}px, 0)`;
+    };
+
+    let ticking = false;
+    const handler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", handler, { passive: true });
+    window.addEventListener("resize", handler);
+    return () => {
+      window.removeEventListener("scroll", handler);
+      window.removeEventListener("resize", handler);
+    };
+  }, []);
+
+  // Mobile slider parallax
+  useEffect(() => {
+    const update = () => {
+      const el = sliderRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, 1 - rect.top / vh));
+      el.style.transform = `translate3d(${-150 * progress}px, 0, 0)`;
     };
 
     let ticking = false;
@@ -100,8 +182,22 @@ export default function Testimonials() {
           Check our <span className="font-bold">clients&apos; words</span>
         </h2>
 
-        {/* Grid of 6 containers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        {/* MOBILE — horizontal slider with parallax */}
+        {/* MOBILE — wrapper pe overflow-hidden */}
+        <div className="md:hidden overflow-hidden">
+          <div
+            ref={sliderRef}
+            className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4"
+            style={{ willChange: "transform" }}
+          >
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP — 2 column grid */}
+        <div className="hidden md:grid grid-cols-2 gap-8 md:gap-12">
           <div
             ref={leftColumnRef}
             className="space-y-8 md:space-y-12 md:mt-[var(--testimonial-top-margin)]"
@@ -112,58 +208,10 @@ export default function Testimonials() {
             {testimonials
               .filter((_, index) => index % 2 === 0)
               .map((testimonial) => (
-                <div
+                <TestimonialCard
                   key={testimonial.id}
-                  className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]"
-                >
-                  {/* Top image */}
-                  <div className="w-full overflow-hidden">
-                    <img
-                      src={testimonial.topImage}
-                      className="w-[70px] h-auto md:w-[80px] object-contain filter brightness-0 invert"
-                    />
-                  </div>
-
-                  {/* Quote/paragraph */}
-                  <div className="py-3 md:py-4">
-                    <p className="text-[16px] md:text-[18px] font-[400] text-[#ebebeb] leading-relaxed">
-                      {testimonial.quote}
-                    </p>
-                  </div>
-
-                  {/* Bottom image with description */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-200 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={testimonial.bottomImage}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      {testimonial.id !== 3 ? (
-                        <p className="">
-                          <span className="text-white font-[700] text-[14px]">
-                            {testimonial.name}
-                          </span>
-                          <span className="mx-2 text-xs text-white/70">/</span>
-                          <span className="text-[#ebebeb] font-[400] text-[14px]">
-                            {testimonial.role}
-                          </span>
-                        </p>
-                      ) : (
-                        <>
-                          <p className="font-semibold text-sm text-white">
-                            {testimonial.name}
-                          </p>
-                          <p className="text-xs text-white">
-                            {testimonial.role}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  testimonial={testimonial}
+                />
               ))}
           </div>
 
@@ -171,58 +219,10 @@ export default function Testimonials() {
             {testimonials
               .filter((_, index) => index % 2 === 1)
               .map((testimonial) => (
-                <div
+                <TestimonialCard
                   key={testimonial.id}
-                  className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]"
-                >
-                  {/* Top image */}
-                  <div className="w-full overflow-hidden">
-                    <img
-                      src={testimonial.topImage}
-                      className="w-[70px] h-auto md:w-[80px] object-contain filter brightness-0 invert"
-                    />
-                  </div>
-
-                  {/* Quote/paragraph */}
-                  <div className="py-3 md:py-4">
-                    <p className="text-[16px] md:text-[18px] font-[400] text-[#ebebeb] leading-relaxed">
-                      {testimonial.quote}
-                    </p>
-                  </div>
-
-                  {/* Bottom image with description */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-200 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={testimonial.bottomImage}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      {testimonial.id !== 3 ? (
-                        <p className="">
-                          <span className="text-white font-[700] text-[14px]">
-                            {testimonial.name}
-                          </span>
-                          <span className="mx-2 text-xs text-white/70">/</span>
-                          <span className="text-[#ebebeb] font-[400] text-[14px]">
-                            {testimonial.role}
-                          </span>
-                        </p>
-                      ) : (
-                        <>
-                          <p className="font-semibold text-sm text-white">
-                            {testimonial.name}
-                          </p>
-                          <p className="text-xs text-white">
-                            {testimonial.role}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  testimonial={testimonial}
+                />
               ))}
           </div>
         </div>
