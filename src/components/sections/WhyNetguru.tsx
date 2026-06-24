@@ -20,7 +20,6 @@ export default function WhyNetguru() {
 
       <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-stretch">
-          
           {/* LEFT COLUMN */}
           <div className="flex h-full flex-col justify-between">
             <div>
@@ -39,15 +38,13 @@ export default function WhyNetguru() {
             </p>
           </div>
 
-          {/* RIGHT COLUMN */}
-
           {/* MOBILE — horizontal snap slider */}
           <div className="md:hidden overflow-hidden">
             <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4">
               {numbers.map((item) => (
                 <div
                   key={item.label}
-                  className="snap-start shrink-0 w-[70vw] bg-[radial-gradient(circle_at_top_left,color-mix(in_srgb,#0a1a0f_10%,transparent),color-mix(in_srgb,#0a1a0f_60%,transparent))] p-6 space-y-2"
+                  className="snap-start shrink-0 w-[70vw] bg-[radial-gradient(circle_at_top_left,rgba(0, 150, 70, 0.15),rgba(0,213,99,0.05))] border border-white/10 p-6 space-y-2"
                 >
                   <h3 className="text-white text-[61px] font-[400] mb-0">
                     {item.value}
@@ -78,7 +75,6 @@ export default function WhyNetguru() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

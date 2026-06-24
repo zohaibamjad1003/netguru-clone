@@ -65,7 +65,7 @@ function TestimonialCard({
 }) {
   return (
     <div
-      className="flex flex-col gap-12 md:gap-0 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto md:gap-[2.5rem]
+      className="flex flex-col gap-0 sm:gap-2 md:gap-7 justify-between bg-black pt-[40px] px-[25px] pb-[25px] h-auto 
       // Mobile slider k liye
       snap-start shrink-0 w-[70vw] sm:w-[70vw] md:w-auto
     "

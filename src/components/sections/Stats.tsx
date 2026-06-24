@@ -128,14 +128,14 @@ export default function Stats() {
         {/* DESKTOP — original layout */}
         <div
           ref={containerRef}
-          className="hidden md:flex mt-[100px] gap-10 items-start justify-between lg:flex-nowrap"
+          className="hidden md:flex mt-[100px] gap-6 items-start justify-between flex-wrap lg:flex-nowrap overflow-hidden"
           style={{ '--desktop-card-min-width': `${desktopCardMinWidth}px` } as any}
         >
           {stats.map((stat, index) => (
             <div
               ref={(el) => { cardRefs.current[index] = el }}
               key={stat.label}
-              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)]"
+              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-0 md:min-w-[220px] lg:min-w-[var(--desktop-card-min-width)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)]"
               style={{ transform: 'translate3d(0,0,0)', willChange: 'transform' }}
             >
               <p className="text-[61px] font-[400] text-white">
