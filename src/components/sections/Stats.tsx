@@ -89,7 +89,7 @@ export default function Stats() {
   }, [])
 
   return (
-    <section className="py-24 bg-black text-white">
+    <section className="py-24 bg-black text-white md:overflow-hidden lg:overflow-visible">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="tangible-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-[120px] mb-16">
@@ -117,7 +117,7 @@ export default function Stats() {
                 <p className="text-[61px] font-[400] text-white">
                   <CountUp target={stat.value} suffix={stat.suffix} />
                 </p>
-                <p className="mt-3 pb-6 mb-16 text-[#ebebeb] text-[14px] font-[400] leading-relaxed">
+                <p className="mt-3 pb-2 sm:pb-4 md:pb-10 mb-16 text-[#ebebeb] text-[14px] font-[400] leading-relaxed">
                   {stat.label}
                 </p>
               </div>
@@ -128,14 +128,14 @@ export default function Stats() {
         {/* DESKTOP — original layout */}
         <div
           ref={containerRef}
-          className="hidden md:flex mt-[100px] gap-6 items-start justify-between flex-wrap lg:flex-nowrap overflow-hidden"
+          className="hidden md:flex mt-[100px] gap-10 items-start justify-between lg:flex-nowrap"
           style={{ '--desktop-card-min-width': `${desktopCardMinWidth}px` } as any}
         >
           {stats.map((stat, index) => (
             <div
               ref={(el) => { cardRefs.current[index] = el }}
               key={stat.label}
-              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-0 md:min-w-[220px] lg:min-w-[var(--desktop-card-min-width)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)]"
+              className="bg-[#333333] rounded-none p-[25px] text-white flex-1 min-w-[320px] lg:min-w-[var(--desktop-card-min-width)] lg:basis-[calc((100%-7.5rem)/4)] lg:max-w-[calc((100%-7.5rem)/4)]"
               style={{ transform: 'translate3d(0,0,0)', willChange: 'transform' }}
             >
               <p className="text-[61px] font-[400] text-white">
